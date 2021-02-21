@@ -1,0 +1,29 @@
+namespace EmployeeWebApi.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class CreateEmployeeTbl : DbMigration
+    {
+        public override void Up()
+        {
+            CreateTable(
+                "dbo.Employees",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        FirstName = c.String(),
+                        LastName = c.String(),
+                        Gender = c.String(),
+                        Salary = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+        }
+        
+        public override void Down()
+        {
+            DropTable("dbo.Employees");
+        }
+    }
+}
