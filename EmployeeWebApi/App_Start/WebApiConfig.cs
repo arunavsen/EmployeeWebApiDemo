@@ -10,19 +10,21 @@ using Newtonsoft.Json.Serialization;
 
 namespace EmployeeWebApi
 {
-    public class CustomJsonFormatter : JsonMediaTypeFormatter
-    {
-        public CustomJsonFormatter()
-        {
-            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
-        }
+    //This is customized JSON Formatter
+    //public class CustomJsonFormatter : JsonMediaTypeFormatter
+    //{
+    //    public CustomJsonFormatter()
+    //    {
+    //        this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+    //    }
 
-        public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
-        {
-            base.SetDefaultContentHeaders(type, headers, mediaType);
-            headers.ContentType = new MediaTypeHeaderValue("application/json");
-        }
-    }
+    //    public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
+    //    {
+    //        base.SetDefaultContentHeaders(type, headers, mediaType);
+    //        headers.ContentType = new MediaTypeHeaderValue("application/json");
+    //    }
+    //}
+
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
@@ -41,7 +43,7 @@ namespace EmployeeWebApi
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            config.Formatters.Add(new CustomJsonFormatter());
+            //config.Formatters.Add(new CustomJsonFormatter());
 
             //Return only XML
             //config.Formatters.Remove(config.Formatters.JsonFormatter);

@@ -23,9 +23,37 @@ namespace EmployeeWebApi.Controllers
             return _db.Employees.ToList();
         }
 
-        public Employee Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            return _db.Employees.FirstOrDefault(m => m.Id == id);
+            var entity = _db.Employees.FirstOrDefault(m => m.Id == id);
+            if (entity!=null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, entity);
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Employee with " + id + " is not found");
+            }
+        }
+
+        public HttpResponseMessage Post([FromBody]Employee employee)
+        {
+            try
+            {
+                _db.Employees.Add(employee);
+                _db.SaveChanges();
+
+                var messege = Request.CreateResponse(HttpStatusCode.Created, employee);
+                messege.Headers.Location = new Uri(Request.RequestUri + employee.Id.ToString());
+
+                return messege;
+
+            }
+            catch (Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
+            }
+            
         }
     }
 }
