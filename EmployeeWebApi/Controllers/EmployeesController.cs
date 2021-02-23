@@ -109,7 +109,7 @@ namespace EmployeeWebApi.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Put(int id, [FromBody] Employee employee)
+        public HttpResponseMessage Put(int id, Employee employee)
         {
             try
             {
