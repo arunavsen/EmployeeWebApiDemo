@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // We need to make operation on ul multiple times. That is why we are taking it from the starting globally.
+            var ulEmployees = $('#ulEmployees');
+
+            //We will make code for 'Get All Employees'
+            $('#btn').click(function() {
+                // We will use jquery-ajax function to call the api service
+                $.ajax({
+                    type: 'GET',
+                    url: 'api/Employees',
+                    dataType: 'json',
+                    success: function(data) {
+                        // First clear the unordered list
+                        ulEmployees.empty();
+                        // We will use the data in foreach
+                        $.each(data, function(index, val) {
+                                var fullName = val.FirstName+' '+val.LastName;
+                                ulEmployees.append('<li>' + fullName + '</li>');
+                            });
+                    }
+                });
+            });
+
+            // We will clean the records by this button
+            $('#clear').click(function() {
+                ulEmployees.empty();
+            });
+        });
+    </script>
+</head>
+<body>
+    <input type="button" id="btn" value="Get All Employees" />
+    <input type="button" id="clear" value="Clear" />
+    <ul id="ulEmployees"></ul>
+</body>
+</html>
