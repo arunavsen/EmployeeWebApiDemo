@@ -19,12 +19,14 @@ namespace EmployeeWebApi.Controllers
             _db = db;
         }
 
-        public IEnumerable<Employee> Get()
+        [HttpGet]
+        public IEnumerable<Employee> LoadAllEmployees()
         {
             return _db.Employees.ToList();
         }
 
-        public HttpResponseMessage Get(int id)
+        [HttpGet]
+        public HttpResponseMessage LoadEmployeeById(int id)
         {
             var entity = _db.Employees.FirstOrDefault(m => m.Id == id);
             if (entity!=null)
@@ -37,6 +39,7 @@ namespace EmployeeWebApi.Controllers
             }
         }
 
+        [HttpPost]
         public HttpResponseMessage Post([FromBody]Employee employee)
         {
             try
@@ -57,6 +60,7 @@ namespace EmployeeWebApi.Controllers
             
         }
 
+        [HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
             try
@@ -82,6 +86,7 @@ namespace EmployeeWebApi.Controllers
             }
         }
 
+        [HttpPut]
         public HttpResponseMessage Put(int id, [FromBody] Employee employee)
         {
             try
