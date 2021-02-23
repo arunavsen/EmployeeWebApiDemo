@@ -22,20 +22,29 @@ namespace EmployeeWebApi.Controllers
         [HttpGet]
         public HttpResponseMessage LoadAllEmployees(string gender="All")
         {
-            switch (gender.ToLower())
+            if (gender == null)
             {
-                case "all":
-                    return Request.CreateResponse(HttpStatusCode.OK, _db.Employees.ToList());
-                case "male":
-                    return Request.CreateResponse(HttpStatusCode.OK,
-                        _db.Employees.Where(m => m.Gender.ToLower() == "male").ToList());
-                case "female":
-                    return Request.CreateResponse(HttpStatusCode.OK,
-                        _db.Employees.Where(m => m.Gender.ToLower() == "female").ToList());
-                default:
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                        "Value for gender must be All, Male or Female. " + gender + " is invalid");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                    "Value for gender must be All, Male or Female. " + gender + " is invalid");
             }
+            else
+            {
+                switch (gender.ToLower())
+                {
+                    case "all":
+                        return Request.CreateResponse(HttpStatusCode.OK, _db.Employees.ToList());
+                    case "male":
+                        return Request.CreateResponse(HttpStatusCode.OK,
+                            _db.Employees.Where(m => m.Gender.ToLower() == "male").ToList());
+                    case "female":
+                        return Request.CreateResponse(HttpStatusCode.OK,
+                            _db.Employees.Where(m => m.Gender.ToLower() == "female").ToList());
+                    default:
+                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                            "Value for gender must be All, Male or Female. " + gender + " is invalid");
+                }
+            }
+            
         }
 
         [HttpGet]
