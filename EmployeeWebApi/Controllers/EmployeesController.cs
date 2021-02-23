@@ -55,5 +55,30 @@ namespace EmployeeWebApi.Controllers
             }
             
         }
+
+        public HttpResponseMessage Delete(int id)
+        {
+            try
+            {
+                var employee = _db.Employees.FirstOrDefault(m => m.Id == id);
+
+                if (employee == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Employee with Id= " + id.ToString(
+                                                                                ) + " not found");
+                }
+                else
+                {
+                    _db.Employees.Remove(employee);
+                    _db.SaveChanges();
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+            }
+            catch (Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
+
+            }
+        }
     }
 }
