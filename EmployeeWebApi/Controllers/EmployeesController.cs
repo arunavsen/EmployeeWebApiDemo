@@ -20,9 +20,22 @@ namespace EmployeeWebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Employee> LoadAllEmployees()
+        public HttpResponseMessage LoadAllEmployees(string gender="All")
         {
-            return _db.Employees.ToList();
+            switch (gender.ToLower())
+            {
+                case "all":
+                    return Request.CreateResponse(HttpStatusCode.OK, _db.Employees.ToList());
+                case "male":
+                    return Request.CreateResponse(HttpStatusCode.OK,
+                        _db.Employees.Where(m => m.Gender.ToLower() == "male").ToList());
+                case "female":
+                    return Request.CreateResponse(HttpStatusCode.OK,
+                        _db.Employees.Where(m => m.Gender.ToLower() == "female").ToList());
+                default:
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                        "Value for gender must be All, Male or Female. " + gender + " is invalid");
+            }
         }
 
         [HttpGet]
