@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -79,6 +80,36 @@ namespace EmployeeWebApi.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
 
             }
+        }
+
+        public HttpResponseMessage Put(int id, [FromBody] Employee employee)
+        {
+            try
+            {
+                var entity = _db.Employees.FirstOrDefault(m => m.Id == id);
+
+                if (entity == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                        "Employee with Id = " + id.ToString() + " not found to update");
+                }
+                else
+                {
+                    entity.FirstName = employee.FirstName;
+                    entity.LastName = employee.LastName;
+                    entity.Gender = employee.Gender;
+                    entity.Salary = employee.Salary;
+
+                    _db.SaveChanges();
+                    return Request.CreateResponse(HttpStatusCode.OK, entity);
+                }
+                
+            }
+            catch (Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e);
+            }
+            
         }
     }
 }
