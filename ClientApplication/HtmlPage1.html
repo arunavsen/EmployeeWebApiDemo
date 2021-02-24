@@ -14,16 +14,16 @@
                 // We will use jquery-ajax function to call the api service
                 $.ajax({
                     type: 'GET',
-                    url: 'api/Employees',
+                    url: 'https://localhost:44350/api/employees',
                     dataType: 'jsonp',
                     success: function(data) {
                         // First clear the unordered list
                         ulEmployees.empty();
                         // We will use the data in foreach
                         $.each(data, function(index, val) {
-                                var fullName = val.FirstName+' '+val.LastName;
-                                ulEmployees.append('<li>' + fullName + '</li>');
-                            });
+                            var fullName = val.FirstName+' '+val.LastName;
+                            ulEmployees.append('<li>' + fullName + '</li>');
+                        });
                     }
                 });
             });
@@ -36,8 +36,8 @@
     </script>
 </head>
 <body>
-    <input type="button" id="btn" value="Get All Employees" />
-    <input type="button" id="clear" value="Clear" />
-    <ul id="ulEmployees"></ul>
+<input type="button" id="btn" value="Get All Employees" />
+<input type="button" id="clear" value="Clear" />
+<ul id="ulEmployees"></ul>
 </body>
 </html>
