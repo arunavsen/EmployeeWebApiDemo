@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using WebApiContrib.Formatting.Jsonp;
@@ -58,8 +59,13 @@ namespace EmployeeWebApi
             //Camel case instead of Pascal case
             //config.Formatters.JsonFormatter.SerializerSettings.ContractResolver= new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
 
-            var jsonpFormatter = new JsonpMediaTypeFormatter(config.Formatters.JsonFormatter);
-            config.Formatters.Insert(0,jsonpFormatter);
+            // By using JSONP, we can allow origin
+            //var jsonpFormatter = new JsonpMediaTypeFormatter(config.Formatters.JsonFormatter);
+            //config.Formatters.Insert(0,jsonpFormatter);
+
+            //These 2 line codes enable CORS globally
+            EnableCorsAttribute cors = new EnableCorsAttribute("*","*","*");
+            config.EnableCors(cors);
         }
     }
 }

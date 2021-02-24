@@ -15,7 +15,7 @@
                 $.ajax({
                     type: 'GET',
                     url: 'api/Employees',
-                    dataType: 'jsonp',
+                    dataType: 'json',
                     success: function(data) {
                         // First clear the unordered list
                         ulEmployees.empty();
