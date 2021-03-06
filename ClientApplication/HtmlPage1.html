@@ -10,34 +10,48 @@
             var ulEmployees = $('#ulEmployees');
 
             //We will make code for 'Get All Employees'
-            $('#btn').click(function() {
+            $('#btn').click(function () {
                 // We will use jquery-ajax function to call the api service
+                var username = $('#txtUserName').val();
+                var password = $('#txtPassword').val();
+
                 $.ajax({
                     type: 'GET',
                     url: 'https://localhost:44350/api/employees',
                     dataType: 'json',
-                    success: function(data) {
+                    headers: {
+                        'Authorization':'Basic '+ btoa(username+':'+password)
+                    },
+                    success: function (data) {
                         // First clear the unordered list
                         ulEmployees.empty();
                         // We will use the data in foreach
-                        $.each(data, function(index, val) {
-                            var fullName = val.FirstName+' '+val.LastName;
-                            ulEmployees.append('<li>' + fullName + '</li>');
+                        $.each(data, function (index, val) {
+                            var fullName = val.FirstName + ' ' + val.LastName;
+                            ulEmployees.append('<li>' + fullName + ' ('+ val.Gender + ')</li>');
                         });
+                    },
+                    complete: function(jqXHR) {
+                        if (jqXHR.status =='401') {
+                            ulEmployees.empty();
+                            ulEmployees.append('<li style=color:red;>' + jqXHR.status +' : ' +jqXHR.statusText + '</li>');
+                        }
                     }
                 });
             });
 
             // We will clean the records by this button
-            $('#clear').click(function() {
+            $('#clear').click(function () {
                 ulEmployees.empty();
             });
         });
     </script>
 </head>
 <body>
-<input type="button" id="btn" value="Get All Employees" />
-<input type="button" id="clear" value="Clear" />
-<ul id="ulEmployees"></ul>
+    Username : <input type="text" id="txtUserName" />
+    Password : <input type="password" id="txtPassword" />
+    <input type="button" id="btn" value="Get All Employees" />
+    <input type="button" id="clear" value="Clear" />
+    <ul id="ulEmployees"></ul>
 </body>
 </html>
