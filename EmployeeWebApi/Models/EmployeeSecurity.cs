@@ -7,18 +7,16 @@ namespace EmployeeWebApi.Models
 {
     public class EmployeeSecurity
     {
-        public static ApplicationDbContext _db;
-
-        public EmployeeSecurity(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-
         //Basic authentication is implemented
         public static bool Login(string username, string password)
         {
-            return _db.Users.Any(m =>
-                m.UserName.Equals(username, StringComparison.OrdinalIgnoreCase) && m.Password == password);
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                //var t = context.Users.Find(username);
+                var x = context.Users.Any(m =>
+                    m.UserName.Equals(username, StringComparison.OrdinalIgnoreCase) && m.Password == password);
+                return x;
+            }
         }
     }
 }

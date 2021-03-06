@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using EmployeeWebApi.Models;
 
@@ -20,8 +21,10 @@ namespace EmployeeWebApi.Controllers
         }
 
         [HttpGet]
+        [BasicAuthentication]
         public HttpResponseMessage LoadAllEmployees(string gender="All")
         {
+            var userName = Thread.CurrentPrincipal.Identity.Name;
             if (gender == null)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
@@ -29,10 +32,8 @@ namespace EmployeeWebApi.Controllers
             }
             else
             {
-                switch (gender.ToLower())
+                switch (userName.ToLower())
                 {
-                    case "all":
-                        return Request.CreateResponse(HttpStatusCode.OK, _db.Employees.ToList());
                     case "male":
                         return Request.CreateResponse(HttpStatusCode.OK,
                             _db.Employees.Where(m => m.Gender.ToLower() == "male").ToList());
@@ -40,8 +41,7 @@ namespace EmployeeWebApi.Controllers
                         return Request.CreateResponse(HttpStatusCode.OK,
                             _db.Employees.Where(m => m.Gender.ToLower() == "female").ToList());
                     default:
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest,
-                            "Value for gender must be All, Male or Female. " + gender + " is invalid");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
             }
             
